@@ -1,0 +1,120 @@
+Program BubbleSort;
+uses crt;
+var a: array[1..6] of integer;
+    i, j, temp: integer;
+begin
+    randomize;
+    
+    for i := 1 to length(a) do
+        a[i] := random(49) + 1;
+    
+    for i:= 1 to length(a) do
+        write(a[i]:3);
+    writeln();
+    
+    for i:= 1 to length(a) - 1 do begin
+        for j := 1 to length(a) - i do
+            if a[j] > a[j+1] then begin
+                temp := a[j];
+                a[j] := a[j+1];
+                a[j+1] := temp;
+            end;
+    end;
+    
+    for i := 1 to length(a) do
+        write(a[i]:3);
+        writeln();
+        
+    readkey;
+end.
+ 
+------------------------------------------------------------------------
+ 
+Program BubbleSort;
+uses crt;
+var a: array[1..6] of char;
+    i, j: integer;
+    temp: char;
+begin
+    for i := 1 to length(a) do
+        a[i] := readkey;
+    
+    for i:= 1 to length(a) do
+        write(a[i]:3);
+    writeln();
+    
+    for i:= 1 to length(a) - 1 do begin
+        for j := 1 to length(a) - i do
+            if ord(a[j]) > ord(a[j+1]) then begin
+                temp := a[j];
+                a[j] := a[j+1];
+                a[j+1] := temp;
+            end;
+    end;
+    
+    for i := 1 to length(a) do
+        write(a[i]:3);
+        writeln();
+        
+    readkey;
+end.
+ 
+-------------------------------------------------------------------
+ 
+Program Ziehung;
+uses crt;
+var a: array[1..6] of integer;
+    i,j, temp: integer;
+    doppelt: boolean;
+begin
+    randomize;
+    
+    repeat
+        for i := 1 to length(a) do
+            a[i] := random(49) + 1;
+        
+        doppelt := false;
+        for i := 1 to length(a) - 1 do
+            for j := i+1 to length(a) do
+                if a[i] = a[j] then
+                    doppelt := true;
+    until not doppelt;
+ 
+    
+    for i := 1 to length(a) do
+        write(a[i]:3);
+        writeln();
+ 
+    readkey;
+end.
+ 
+---------------------------------------------------------
+ 
+Program Ziehung;
+uses crt;
+ 
+var a: array[1..6] of integer;
+    zahlen: set of 1..49;
+    i, temp: integer;
+    doppelt: boolean;
+begin
+    randomize;
+    
+    zahlen := [1..49];
+    
+    for i := 1 to length(a) do
+        while true do begin
+            temp := random(49) + 1;
+            if temp in zahlen then begin
+                a[i] := temp;
+                zahlen := zahlen - [temp];
+                break;
+            end;
+        end;
+ 
+    for i := 1 to length(a) do
+        write(a[i]:3);
+        writeln();
+    
+    readkey;
+end.
