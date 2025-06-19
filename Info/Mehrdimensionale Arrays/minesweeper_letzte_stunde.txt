@@ -1,0 +1,77 @@
+Program Minesweeper;
+uses crt, sysutils;
+var minen: array[1..9, 1..9] of boolean;
+    zahlen: array[1..9, 1..9] of integer;
+
+    x, y, i, j, cur_y, cur_x : integer;
+    
+    temp : char;
+    
+
+procedure minen_erstellen();
+begin
+    for i := 1 to 10 do begin
+        repeat
+            y := random(9) + 1;
+            x := random(9) + 1;
+        until not minen[y, x];
+        minen[y, x] := true;
+    end;
+end;
+
+procedure zahlen_berechnen();
+begin
+    for i := 1 to 9 do begin
+        for j := 1 to 9 do begin
+            if minen[i, j] then begin
+                for y := -1 to 1 do begin
+                    for x := -1 to 1 do begin
+                        if (x + j < 1) or (y + i < 1) or (x + j > 9) or (y + i > 9) then continue; // Feldränder beachten
+		                zahlen[i + y, j + x] += 1;
+                    end;
+                end;
+            end;
+        end;
+    end;
+end;
+
+procedure ausgabe();
+begin
+    for i := 1 to 9 do begin
+        for j := 1 to 9 do begin
+            if (cur_y = i) and (cur_x = j) then begin
+                write('<>': 2);
+                continue
+            end;
+            if minen[i, j] then write('X' : 2)
+            else write(zahlen[i, j] : 2);
+        end;
+        writeln();
+    end;
+end;
+
+procedure eingabe();
+begin
+    temp := readkey;
+    if temp = 'a' then cur_x -= 1;
+    if temp = 'd' then cur_x += 1;
+    if temp = 'w' then cur_y -= 1;
+    if temp = 's' then cur_y += 1;
+end;
+    
+begin
+    randomize;
+    minen_erstellen();
+    zahlen_berechnen();
+    
+    cur_y := 1;
+    cur_x := 1;
+    ausgabe();
+    
+    
+    while true do begin
+        clrscr;
+        ausgabe();
+        eingabe();
+    end;
+end.
