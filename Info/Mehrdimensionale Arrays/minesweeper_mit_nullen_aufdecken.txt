@@ -1,0 +1,133 @@
+Program Minesweeper;
+uses crt, sysutils;
+var minen: array[1..9, 1..9] of boolean;
+    zahlen: array[1..9, 1..9] of integer;
+    aufgedeckt: array[1..9, 1..9] of boolean;
+    markiert: array[1..9, 1..9] of boolean;
+
+    x, y, i, j, cur_y, cur_x : integer;
+    
+    temp : char;
+    
+    soll_weiterlaufen: boolean;
+    
+
+procedure minen_erstellen();
+begin
+    for i := 1 to 10 do begin
+        repeat
+            y := random(9) + 1;
+            x := random(9) + 1;
+        until not minen[y, x];
+        minen[y, x] := true;
+    end;
+end;
+
+procedure zahlen_berechnen();
+begin
+    for i := 1 to 9 do begin
+        for j := 1 to 9 do begin
+            if minen[i, j] then begin
+                for y := -1 to 1 do begin
+                    for x := -1 to 1 do begin
+                        if (x + j < 1) or (y + i < 1) or (x + j > 9) or (y + i > 9) then continue; // Feldränder beachten
+		                    zahlen[i + y, j + x] += 1;
+                    end;
+                end;
+            end;
+        end;
+    end;
+end;
+
+procedure aufdecken(y, x: integer);
+var dy, dx: integer;
+begin
+
+    if (y > 9) or (y < 1) or (x < 1) or (x > 9) then
+        exit();
+
+    if aufgedeckt[y, x] then
+        exit();
+        
+    aufgedeckt[y, x] := true;
+    
+    if not (zahlen[y, x] = 0) then
+        exit();
+        
+    for dy := -1 to 1 do begin
+        for dx := -1 to 1 do begin
+            aufdecken(y + dy, x + dx);
+        end;
+    end;
+end;
+
+procedure ausgabe();
+var s: string;
+begin
+    for i := 1 to 9 do begin
+        for j := 1 to 9 do begin
+            s := '';
+            
+            if aufgedeckt[i, j] then begin
+                if minen[i, j] then s := 'X'
+                else s := inttostr(zahlen[i, j]);
+            end
+            else
+                s := '#';
+                
+            if markiert[i, j] then begin
+                s := '!';
+            end;
+        
+            if (cur_y = i) and (cur_x = j) then begin
+                write('<'+ s+ '>': 3);
+            end
+            else
+                write(' ' + s + ' ': 3);
+            
+        end;
+        writeln();
+    end;
+end;
+
+procedure eingabe(var weiter: boolean);
+begin
+    weiter := true;
+    temp := readkey;
+    if temp = 'a' then cur_x -= 1;
+    if temp = 'd' then cur_x += 1;
+    if temp = 'w' then cur_y -= 1;
+    if temp = 's' then cur_y += 1;
+    
+    if temp = '1' then begin
+        aufdecken(cur_y, cur_x);
+        if minen[cur_y, cur_x] then begin
+            weiter := false;
+            clrscr;
+            writeln('Mine aufgedeckt');
+            ausgabe();
+            exit;
+        end;
+    end;
+            
+            
+    if temp = '2' then markiert[cur_y, cur_x] := true;
+end;
+    
+begin
+    randomize;
+    minen_erstellen();
+    zahlen_berechnen();
+    
+    cur_y := 1;
+    cur_x := 1;
+    ausgabe();
+    
+    soll_weiterlaufen := true;
+    
+    while soll_weiterlaufen do begin
+        clrscr;
+        ausgabe();
+        eingabe(soll_weiterlaufen);
+    end;
+end.
