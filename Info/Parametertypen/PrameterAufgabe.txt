@@ -1,0 +1,78 @@
+program parameter;
+
+uses crt;
+
+var p, q, r: integer;
+
+procedure ausgabe (a, b, c: integer);
+
+begin
+writeln (a:4, b:4, c:4);
+end;
+
+procedure mokelei_1 (a ,b, c: integer);
+begin
+a:= c - a;
+b := 3*b;
+c := 9;
+end;
+
+procedure mokelei_var_a (var a:integer; b, c: integer);
+begin
+a:= c - a;
+b := 3*b;
+c := 9;
+end;
+
+procedure mokelei_var_b (a:integer; var b:integer; c: integer);
+begin
+a:= c - a;
+b := 3*b;
+c := 9;
+end;
+
+procedure mokelei_var_c (a, b:integer; var c: integer);
+begin
+a:= c - a;
+b := 3*b;
+c := 9;
+end;
+
+procedure mokelei_var_c_1 (a, b:integer; var c: integer);
+begin
+a:= c - a;
+b := 3*b;
+c := 9;
+write('6.');
+ausgabe (a, b, c); delay(65535);
+end;
+
+procedure mokelei_2 (a, b: integer; var c: integer);
+begin
+a := (b + c) div 3;
+b := (b + c);
+c := (b + c) mod 7;
+write('8.');
+ausgabe (a, b, c); delay(65535);
+end;
+
+begin
+p:=28;
+q:=7;
+r:=8;
+write('1.'); ausgabe (p, q, r); delay(65535);
+mokelei_1 (p, q, r);
+write('2.'); ausgabe (p, q, r); delay(65535);
+mokelei_var_a (p, q, r);
+write('3.'); ausgabe (p, q, r); delay(65535);
+mokelei_var_b (p, q, r);
+write('4.'); ausgabe (p, q, r); delay(65535);
+mokelei_var_c (p, q, r);
+write('5.'); ausgabe (p, q, r); delay(65535);
+mokelei_var_c_1 (p, q, r);
+p := r + q;
+write('7.'); ausgabe (p, q, r); delay(65535);
+mokelei_2 (p, q, r);
+write('9.'); ausgabe (p, q, r); delay(65535);
+readkey;
+end.
